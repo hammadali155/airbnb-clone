@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/output.css">
+  <title>Airbnb - Stays</title>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-900">
+  <%- include('../partials/header') %>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h1 class="text-3xl font-bold mb-6">Explore nearby</h1>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Card 1 -->
+
+        <% registeredHomes.forEach(house=>{ %>
+          <div>
+            <%- include('../partials/card',{house:house}) %>
+
+              <!-- <form action="/favourites" method="POST" class="mt-2">
+                <button type="submit" class="bg-red-400 py-1 px-2">Add to Favourite</button>
+                <input type="text" name="homeId" value="<%=house._id%>" class="hidden">
+              </form> -->
+          </div>
+          <% }) %>
+
+
+      </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+
+</html>

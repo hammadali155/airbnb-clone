@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/output.css">
+    <title>All Homes - Airbnb</title>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-900">
+    <%- include('../partials/header') %>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Header with Filters -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-4">Explore all homes</h1>
+
+                <!-- Filter Buttons -->
+                <div class="flex space-x-4 overflow-x-auto pb-2">
+                    <button
+                        class="px-4 py-2 rounded-full border border-gray-300 hover:border-gray-900 whitespace-nowrap">
+                        <span class="text-sm">All</span>
+                    </button>
+                    <button
+                        class="px-4 py-2 rounded-full border border-gray-300 hover:border-gray-900 whitespace-nowrap">
+                        <span class="text-sm">Beachfront</span>
+                    </button>
+                    <button
+                        class="px-4 py-2 rounded-full border border-gray-300 hover:border-gray-900 whitespace-nowrap">
+                        <span class="text-sm">Cabins</span>
+                    </button>
+                    <button
+                        class="px-4 py-2 rounded-full border border-gray-300 hover:border-gray-900 whitespace-nowrap">
+                        <span class="text-sm">Trending</span>
+                    </button>
+                    <button
+                        class="px-4 py-2 rounded-full border border-gray-300 hover:border-gray-900 whitespace-nowrap">
+                        <span class="text-sm">Amazing views</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Count -->
+            <% if (homes && homes.length> 0) { %>
+                <p class="text-gray-600 mb-6">
+                    <%= homes.length %>
+                        <%= homes.length===1 ? 'home' : 'homes' %> found
+                </p>
+                <% } %>
+
+                    <!-- Homes Grid -->
+                    <% if (homes && homes.length> 0) { %>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <% homes.forEach(house=> { %>
+                                <%- include('../partials/card', {house: house}) %>
+                                    <% }) %>
+                        </div>
+                        <% } else { %>
+                            <!-- Empty State -->
+                            <div class="text-center py-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="mx-auto h-12 w-12 text-gray-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                                </svg>
+                                <h3 class="mt-2 text-lg font-medium text-gray-900">No homes available</h3>
+                                <p class="mt-1 text-sm text-gray-500">Check back later for new listings.</p>
+                            </div>
+                            <% } %>
+
+                                <!-- Pagination (if needed) -->
+                                <% if (homes && homes.length> 0) { %>
+                                    <div class="mt-12 flex justify-center">
+                                        <nav class="flex items-center space-x-2">
+                                            <button
+                                                class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">Previous</button>
+                                            <button class="px-4 py-2 bg-red-500 text-white rounded-md">1</button>
+                                            <button
+                                                class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">2</button>
+                                            <button
+                                                class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">3</button>
+                                            <button
+                                                class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">Next</button>
+                                        </nav>
+                                    </div>
+                                    <% } %>
+        </main>
+
+        <%- include('../partials/footer') %>
+</body>
+
+</html>

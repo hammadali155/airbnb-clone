@@ -1,0 +1,9 @@
+{
+  "watch":".",
+  "ignore": [
+    "data/*.json",
+    "node_modules"
+  ],
+  "ext": "js,html,css",
+  "delay": "1000"
+}
