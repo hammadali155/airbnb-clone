@@ -1,5 +1,5 @@
 const { default: mongoose } = require('mongoose');
-const moongoose = require('mongoose');
+
 
 const USERNAME = 'root'
 const PASSWORD = '1928355aB'
@@ -11,21 +11,12 @@ const host3 = 'ac-jcj8v63-shard-00-02.8v9qlum.mongodb.net'
 
 
 
-const uri = `mongodb://${USERNAME}:${PASSWORD}@${host1},${host2},${host3}/${db}?ssl=true&authSource=admin&retryWrites=true`
+const uri = process.env.Mongo_URI || `mongodb://${USERNAME}:${PASSWORD}@${host1},${host2},${host3}/${db}?ssl=true&authSource=admin&retryWrites=true`
 
 if (!uri) {
   console.error('❌ MONGODB_URI is not defined in .env file');
   process.exit(1);
 }
-
-// , {
-//   serverSelectionTimeoutMS: 5000,
-//   socketTimeoutMS: 45000,
-//   connectTimeoutMS: 3000,
-//   family: 4
-// }
-
-let _db;
 
 module.exports = async function mongoconnect() {
   try {
