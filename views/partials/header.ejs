@@ -1,27 +1,88 @@
 <header class="bg-white shadow-sm sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 items-center">
-      <div class="flex-shrink-0 flex items-center">
+      <!-- Left: Logo -->
+      <div class="flex-shrink-0 flex items-center w-1/4">
         <a href="/" class="text-red-500 text-2xl font-bold tracking-tighter">airbnb</a>
       </div>
-      <nav class="hidden sm:ml-6 sm:flex sm:space-x-8">
+
+      <!-- Center: Main Nav (Desktop) -->
+      <nav class="hidden md:flex md:space-x-8 justify-center flex-grow">
         <a href="/" class="text-gray-500 border-b-2 <%=currentPage==='Home'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%> 
-            
-            inline-flex items-center px-1 pt-1 text-sm font-medium">Home</a>
+          inline-flex items-center px-1 pt-1 text-sm font-medium">Home</a>
+        <% if(isLoggedIn){%>
+            <a href="/favourites" class="text-gray-500 border-b-2 <%=currentPage==='favourites'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
+              inline-flex items-center px-1 pt-1 text-sm font-medium">Favourites</a>
 
-        <a href="/favourites" class="text-gray-500 border-b-2 <%=currentPage==='favourites'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
-            inline-flex items-center px-1 pt-1 text-sm font-medium">Favourites</a>
-        <a href="/bookings" class="text-gray-500 border-b-2 <%=currentPage==='bookings'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
-            inline-flex items-center px-1 pt-1 text-sm font-medium">Bookings
-        </a>
+            <a href="/bookings" class="text-gray-500 border-b-2 <%=currentPage==='bookings'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
+              inline-flex items-center px-1 pt-1 text-sm font-medium">Bookings</a>
 
-        <a href="/host-homes" class="text-gray-500 border-b-2 <%=currentPage==='host homes'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
-            inline-flex items-center px-1 pt-1 text-sm font-medium">Host Homes</a>
+            <a href="/host-homes" class="text-gray-500 border-b-2 <%=currentPage==='host homes'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
+              inline-flex items-center px-1 pt-1 text-sm font-medium">Host Homes</a>
 
-          <a href="/add-home" class="text-gray-500 border-b-2 <%=currentPage==='add home'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
-            inline-flex items-center px-1 pt-1 text-sm font-medium">Add Home</a>
-
+            <a href="/add-home" class="text-gray-500 border-b-2 <%=currentPage==='add home'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
+              inline-flex items-center px-1 pt-1 text-sm font-medium">Add Home</a>
+            <%}%>
       </nav>
+
+      <!-- Right: Auth Links (Desktop) -->
+      <div class="hidden md:flex md:space-x-4 justify-end w-1/4">
+        <% if(!isLoggedIn){%>
+          <a href="/login"
+            class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium <%=currentPage==='login' ? 'bg-gray-100 text-gray-900' : ''%>">Login</a>
+          <a href="/signup"
+            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors">Sign
+            up</a>
+          <%}else{%>
+            <a href="/logout"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors">Logout
+            </a>
+            <% }%>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex items-center md:hidden">
+        <button id="mobile-menu-button" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 pb-4">
+      <div class="flex flex-col space-y-2 mt-2">
+        <a href="/"
+          class="px-4 py-2 text-sm font-medium <%=currentPage==='Home' ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:bg-gray-50'%>">Home</a>
+        <% if(!isLoggedIn){%>
+          <a href="/login" class="px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50">Login</a>
+          <a href="/signup" class="px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50">Sign up</a>
+          <%}else{%>
+            <a href="/favourites"
+              class="px-4 py-2 text-sm font-medium <%=currentPage==='favourites' ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:bg-gray-50'%>">Favourites</a>
+            <a href="/bookings"
+              class="px-4 py-2 text-sm font-medium <%=currentPage==='bookings' ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:bg-gray-50'%>">Bookings</a>
+            <a href="/host-homes"
+              class="px-4 py-2 text-sm font-medium <%=currentPage==='host homes' ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:bg-gray-50'%>">Host
+              Homes</a>
+            <a href="/add-home"
+              class="px-4 py-2 text-sm font-medium <%=currentPage==='add home' ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:bg-gray-50'%>">Add
+              Home</a>
+            <a href="/logout" class="px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50">Logout</a>
+            <%}%>
+              <hr class="border-gray-100">
+
+      </div>
     </div>
   </div>
+
+  <script>
+    const btn = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  </script>
 </header>
