@@ -1,14 +1,16 @@
 const Home= require('../models/home')
 const {ObjectId} = require('mongodb')
 const { findOneAndDelete } = require('../models/user')
+const { deleteImage } = require('../utils/file')
 
 exports.getAddHome = (req,res)=>{
     res.render('./host/add-home',{currentPage:'add home'})
 }
 
 exports.postAddHome = async (req, res) => {
-    const {houseName,price,location,rating,photoUrl,description} = req.body;
-    const home = new Home({houseName,price,location,rating,photoUrl,description,host:req.session.user._id})
+    const {houseName,price,location,rating,description} = req.body;
+    const photo = req.file ? req.file.filename : null;
+    const home = new Home({houseName,price,location,rating,photo,description,host:req.session.user._id})
 
     await home.save()
     res.redirect('/')
@@ -32,18 +34,22 @@ exports.getEditHome = async (req,res)=>{
 }
 
 exports.putEditHome = async (req,res)=>{
-    const {id,houseName,price,location,rating,photoUrl,description} = req.body
+    const {id,houseName,price,location,rating,description} = req.body
 
-    await Home.findByIdAndUpdate(id, { 
-            houseName, 
-            price, 
-            location, 
-            rating, 
-            photoUrl, 
-            description
-        });
-    
 
+    const home = await Home.findById(id)
+    home.houseName = houseName
+    home.price = price
+    home.location = location
+    home.rating = rating
+    home.description = description
+    if(req.file){
+        const oldPhoto = home.photo;
+        deleteImage(oldPhoto);
+        home.photo = req.file.filename
+    }
+
+    await home.save()
     res.redirect('/host-homes')
     
 }

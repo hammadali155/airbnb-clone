@@ -17,7 +17,7 @@
           <h2 class="text-2xl font-bold text-gray-900">Add a new home</h2>
           <p class="mt-1 text-sm text-gray-500">Fill in the details to list your property.</p>
         </div>
-        <form action="/add-home" method="POST" class="px-6 py-8 space-y-6">
+        <form action="/add-home" method="POST" enctype="multipart/form-data" class="px-6 py-8 space-y-6">
 
           <div>
             <label for="houseName" class="block text-sm font-medium text-gray-700">House Name</label>
@@ -56,12 +56,12 @@
           </div>
 
           <div>
-            <label for="photoUrl" class="block text-sm font-medium text-gray-700">Photos</label>
-            <!-- <div class="mt-1 cursor-pointer">
-              <input type="file" name="photo" multiple accept="image/png image/jpg image/jpeg" > -->
-              <input type="text" name="photoUrl" id="photoUrl"
+            <label for="photo" class="block text-sm font-medium text-gray-700">Photos</label>
+            <div class="mt-1 cursor-pointer">
+              <input type="file" name="photo" multiple accept="image/png image/jpg image/jpeg" >
+              <!-- <input type="text" name="photo" id="photo"
                 class="shadow-sm focus:ring-red-500 focus:border-red-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
-                placeholder="https://example.com/image.jpg">
+                placeholder="https://example.com/image.jpg"> -->
             </div>
 
           <div>

@@ -7,7 +7,7 @@ const homeSchema = new mongoose.Schema({
   price:{type:Number, required:true},
   location:{type:String, required:true},
   rating:{type:String, required:true},
-  photoUrl:{type:String, required:true},
+  photo:{type:String, required:true},
   description: String,
   host:{
     type:mongoose.Types.ObjectId,

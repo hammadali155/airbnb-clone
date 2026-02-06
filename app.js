@@ -10,6 +10,7 @@ const { hostRouter } = require('./routes/hostRouter')
 const authRouter = require('./routes/authRouter')
 
 const {authMiddleware} = require('./middlewares/authMiddleware')
+const upload = require('./middlewares/imageUpload')
 
 const { rootDir } = require('./utils/path')
 const mongoconnect = require('./utils/database');
@@ -23,8 +24,17 @@ const app = express()
 app.set('view engine', 'ejs');
 app.set('views', 'views')
 
-app.use(express.static(path.join(rootDir, 'public')))
 app.use(express.urlencoded({ extended: true })); // Fixed deprecation warning implicitly
+app.use(express.static(path.join(rootDir, 'public')))
+app.use(express.static(path.join(rootDir, 'public','uploads')))
+
+app.use(upload.single('photo'),(req,res,next)=>{
+    console.log(req.body);
+    console.log(req.file);
+    next()
+})
+
+
 
 const store = MongoStore.create({
     mongoUrl: process.env.Mongo_URI,

@@ -29,7 +29,6 @@ exports.postLogin =async (req,res)=>{
     req.session.isLoggedIn= true;
     
 
-    const registeredHomes = await Home.find()
 
     // res.render('store/home',{currentPage:'home',registeredHomes})
     res.redirect('/')
