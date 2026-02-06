@@ -9,7 +9,7 @@
 </head>
 
 <body class="bg-gray-50 font-sans text-gray-900">
-  <%- include('../partials/header',{isLoggedIn}) %>
+  <%- include('../partials/header') %>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 class="text-3xl font-bold mb-6">Explore nearby</h1>
@@ -19,7 +19,7 @@
 
         <% registeredHomes.forEach(house=>{ %>
           <div>
-            <%- include('../partials/card',{house:house}) %>
+            <%- include('../partials/card',{house}) %>
 
               <!-- <form action="/favourites" method="POST" class="mt-2">
                 <button type="submit" class="bg-red-400 py-1 px-2">Add to Favourite</button>

@@ -9,6 +9,8 @@ const storeRouter = require('./routes/storeRouter')
 const { hostRouter } = require('./routes/hostRouter')
 const authRouter = require('./routes/authRouter')
 
+const {authMiddleware} = require('./middlewares/authMiddleware')
+
 const { rootDir } = require('./utils/path')
 const mongoconnect = require('./utils/database');
 const errController = require('./controllers/errController')
@@ -44,6 +46,8 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use((req, res, next) => {
     res.locals.isLoggedIn = req.session.isLoggedIn;
+    res.locals.user = req.session.user;
+    req.user = req.session.user;
     next()
 })
 app.use(authRouter)
@@ -51,13 +55,7 @@ app.use(authRouter)
 
 
 app.use(storeRouter)
-app.use((req, res, next) => {
-    if (!req.session.isLoggedIn) {
-        res.redirect('/')
-    } else {
-        next()
-    }
-}, hostRouter)
+app.use(authMiddleware,hostRouter)
 
 
 // 404 Page Not Found Middleware

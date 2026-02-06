@@ -1,5 +1,6 @@
 const Home= require('../models/home')
 const {ObjectId} = require('mongodb')
+const { findOneAndDelete } = require('../models/user')
 
 exports.getAddHome = (req,res)=>{
     res.render('./host/add-home',{currentPage:'add home'})
@@ -7,19 +8,19 @@ exports.getAddHome = (req,res)=>{
 
 exports.postAddHome = async (req, res) => {
     const {houseName,price,location,rating,photoUrl,description} = req.body;
-
-    const home = new Home({houseName,price,location,rating,photoUrl,description,favourite:false})
+    const home = new Home({houseName,price,location,rating,photoUrl,description,host:req.session.user._id})
 
     await home.save()
-
     res.redirect('/')
 }
 
 
 
 exports.getHostHomesList = async (req, res) => {
-    const registeredHomes = await Home.find()
-    res.render('./host/host-home-list', { registeredHomes, currentPage: "host homes" });
+    const hostId = req.session.user
+
+    const hostHomes = await Home.find({host:hostId})
+    res.render('./host/host-home-list', { registeredHomes:hostHomes, currentPage: "host homes" });
 
     // res.sendFile(path.join(rootDir,'views','home.html')
 
@@ -32,7 +33,6 @@ exports.getEditHome = async (req,res)=>{
 
 exports.putEditHome = async (req,res)=>{
     const {id,houseName,price,location,rating,photoUrl,description} = req.body
-    const home = Home.findOne({_id:id})
 
     await Home.findByIdAndUpdate(id, { 
             houseName, 
@@ -40,8 +40,7 @@ exports.putEditHome = async (req,res)=>{
             location, 
             rating, 
             photoUrl, 
-            description,
-            favourite:home.favourite
+            description
         });
     
 
@@ -51,6 +50,8 @@ exports.putEditHome = async (req,res)=>{
 
 exports.postDeleteHome = async (req,res)=>{
     const homeId = req.params.homeId;
-    await Home.findByIdAndDelete(homeId);
-    res.redirect('/host-homes')
+    const hostId = req.session.user._id
+
+    await Home.findOneAndDelete({_id:homeId,host:hostId})
+    return res.redirect('/host-homes')
 }

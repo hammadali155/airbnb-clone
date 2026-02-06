@@ -1,44 +1,56 @@
-const Favourite = require('../models/favourite');
+const User = require('../models/user')
 const Home = require('../models/home')
-const {ObjectId} = require('mongodb')
+const { ObjectId } = require('mongodb')
 
 
 exports.getHome = async (req, res) => {
     const registeredHomes = await Home.find()
-    res.render('./store/home', { registeredHomes, currentPage: "Home" });
+    const user = req.session.user ? await User.findById(req.session.user._id) : null;
+    const favouriteIds = user ? user.favourite.map(id => id.toString()) : [];
 
-    // res.sendFile(path.join(rootDir,'views','home.html')
+    const homesWithFavourites = registeredHomes.map(home => {
+        return {
+            ...home._doc,
+            favourite: favouriteIds.includes(home._id.toString())
+        }
+    });
 
+    res.render('./store/home', { registeredHomes: homesWithFavourites, currentPage: "Home" });
 }
 
 exports.getFavouritesHomes = async (req, res) => {
-    let favourites = await Favourite.find().populate('homeId')
-    favourites = favourites.map(fav => fav.homeId)
+    const userId = req.session.user._id;
+    let user = await User.findById(userId).populate('favourite')
 
-    res.render('./store/favourite-list', { favourites: favourites, currentPage: "favourites" });
+    const favouriteHomes = user.favourite.map(home => {
+        return {
+            ...home._doc,
+            favourite: true
+        }
+    });
 
-    // res.sendFile(path.join(rootDir,'views','home.html')
-
+    res.render('./store/favourite-list', { favourites: favouriteHomes, currentPage: "favourites" });
 }
 
 exports.postToggleFavourite = async (req, res) => {
-    const homeId = req.body.homeId.toString();
-    //favourite home obj
-    let favourite = await Favourite.findOne({ homeId }).populate('homeId')
+    const homeId = req.body.homeId;
+    const userId = req.session.user._id;
 
-    const home = await Home.findById({_id:homeId})
+    try {
+        const user = await User.findById(userId);
+        const isFavourite = user.favourite.includes(homeId);
 
-    if (!favourite) {
-        home.favourite = true;
-        const favourite = new Favourite({ homeId })
-        await favourite.save()
-    }else{
-        home.favourite = false;
-        await Favourite.findOneAndDelete({homeId})
+        if (isFavourite) {
+            user.favourite.pull(homeId);
+        } else {
+            user.favourite.push(homeId);
+        }
+        await user.save();
+        res.redirect('/favourites');
+    } catch (err) {
+        console.log(err);
+        res.redirect('/');
     }
-    await home.save()
-
-    res.redirect('/favourites')
 }
 
 // exports.postRemoveFromFavourite = async (req, res) => {
@@ -60,16 +72,22 @@ exports.getBookingsHomes = async (req, res) => {
 
 
 exports.getHomeDetails = async (req, res) => {
-    const userId = req.params.userId;
+    const homeId = req.params.userId;
 
-    const home = await Home.findById(userId);
-
+    const home = await Home.findById(homeId);
     if (!home) {
-        res.redirect('/')
-    } else {
-        res.render('./store/home-details', { house: home, currentPage: "Home" })
+        return res.redirect('/')
     }
 
+    const user = req.session.user ? await User.findById(req.session.user._id) : null;
+    const isFavourite = user ? user.favourite.includes(homeId) : false;
+
+    const homeWithFavourite = {
+        ...home._doc,
+        favourite: isFavourite
+    };
+
+    res.render('./store/home-details', { house: homeWithFavourite, currentPage: "Home" })
 }
 
 

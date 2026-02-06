@@ -11,17 +11,20 @@
         <a href="/" class="text-gray-500 border-b-2 <%=currentPage==='Home'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%> 
           inline-flex items-center px-1 pt-1 text-sm font-medium">Home</a>
         <% if(isLoggedIn){%>
+          <% if(user.userType=='guest' ){%>
             <a href="/favourites" class="text-gray-500 border-b-2 <%=currentPage==='favourites'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
               inline-flex items-center px-1 pt-1 text-sm font-medium">Favourites</a>
 
             <a href="/bookings" class="text-gray-500 border-b-2 <%=currentPage==='bookings'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
               inline-flex items-center px-1 pt-1 text-sm font-medium">Bookings</a>
+          <% }else{%>
 
-            <a href="/host-homes" class="text-gray-500 border-b-2 <%=currentPage==='host homes'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
+              <a href="/host-homes" class="text-gray-500 border-b-2 <%=currentPage==='host homes'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
               inline-flex items-center px-1 pt-1 text-sm font-medium">Host Homes</a>
 
-            <a href="/add-home" class="text-gray-500 border-b-2 <%=currentPage==='add home'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
+              <a href="/add-home" class="text-gray-500 border-b-2 <%=currentPage==='add home'? 'border-red-500 text-gray-900 ':'hover:border-gray-300 hover:text-gray-700 hover:border-b-2 border-transparent'%>
               inline-flex items-center px-1 pt-1 text-sm font-medium">Add Home</a>
+              <% } %>
             <%}%>
       </nav>
 
@@ -59,16 +62,19 @@
           <a href="/login" class="px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50">Login</a>
           <a href="/signup" class="px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50">Sign up</a>
           <%}else{%>
+            <%if(user.userType=='guest'){%>
             <a href="/favourites"
               class="px-4 py-2 text-sm font-medium <%=currentPage==='favourites' ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:bg-gray-50'%>">Favourites</a>
             <a href="/bookings"
               class="px-4 py-2 text-sm font-medium <%=currentPage==='bookings' ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:bg-gray-50'%>">Bookings</a>
+              <% }else{ %>
             <a href="/host-homes"
               class="px-4 py-2 text-sm font-medium <%=currentPage==='host homes' ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:bg-gray-50'%>">Host
               Homes</a>
             <a href="/add-home"
               class="px-4 py-2 text-sm font-medium <%=currentPage==='add home' ? 'text-red-500 bg-red-50' : 'text-gray-500 hover:bg-gray-50'%>">Add
               Home</a>
+              <%}%>
             <a href="/logout" class="px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-50">Logout</a>
             <%}%>
               <hr class="border-gray-100">
