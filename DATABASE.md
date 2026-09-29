@@ -86,14 +86,7 @@ This will:
 - Set up foreign key relationships
 
 ### Configuration
-Database credentials are stored in `.env` file:
-```
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=1928355aB
-DB_NAME=airbnb_db
-DB_PORT=3306
-```
+Database credentials belong in `.env`. Copy `.env.example` and fill in your own values. Do not commit real passwords.
 
 ## Usage in Code
 

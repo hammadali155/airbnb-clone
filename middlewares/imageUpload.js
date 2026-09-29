@@ -1,5 +1,9 @@
+const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
+
+const uploadDir = path.join(__dirname, '..', 'public', 'uploads');
+fs.mkdirSync(uploadDir, { recursive: true });
 
 
 const randomString = (length) => {
@@ -15,7 +19,7 @@ const randomString = (length) => {
 // Set up storage engine for multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads/'); // Directory to save uploaded images
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);

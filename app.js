@@ -1,5 +1,6 @@
 // Load environment variables
 require('dotenv').config();
+
 const express = require('express')
 const path = require('path')
 const session = require('express-session')
@@ -36,14 +37,27 @@ app.use(upload.single('photo'),(req,res,next)=>{
 
 
 
+const mongoUrl = process.env.Mongo_URI;
+const sessionSecret = process.env.SESSION_SECRET;
+
+if (!mongoUrl) {
+    console.error('❌ Mongo_URI is not defined in .env file');
+    process.exit(1);
+}
+
+if (!sessionSecret) {
+    console.error('❌ SESSION_SECRET is not defined in .env file');
+    process.exit(1);
+}
+
 const store = MongoStore.create({
-    mongoUrl: process.env.Mongo_URI,
+    mongoUrl,
     collectionName: 'sessions',
     ttl: 14 * 24 * 60 * 60, // Optional: sessions expire in 14 days
     autoRemove: 'native'    // Let MongoDB handle cleanup
 })
 const sessionConfig = {
-    secret: 'my airbnb clone',
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
     store,

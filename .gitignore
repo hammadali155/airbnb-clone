@@ -179,7 +179,6 @@ db/
 .DS_Store
 Thumbs.db
 
-# Uploaded content (If users can upload profile pictures/property images)
-public/uploads/
-public/
-public/images
+# Uploaded images (keep the folder)
+public/uploads/*
+!public/uploads/.gitkeep
